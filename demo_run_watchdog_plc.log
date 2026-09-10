@@ -1,0 +1,10 @@
+[PLC ] Modbus TCP server (simulated PLC register map) listening on 127.0.0.1:5020
+[PLC ] Item #001 detected at inspection point (HR0 Item_Trigger_Counter -> 1)
+[PLC ] Result for item #001: FAIL  (confidence 53.4%, class=Dent) - consuming and clearing HR6
+[PLC ] Item #002 detected at inspection point (HR0 Item_Trigger_Counter -> 2)
+[PLC ] Result for item #002: FAIL  (confidence 87.0%, class=Dent) - consuming and clearing HR6
+[PLC ] Item #003 detected at inspection point (HR0 Item_Trigger_Counter -> 3)
+[PLC ] *** AI_Heartbeat stale for >2.0s - declaring AI OFFLINE, routing all items to MANUAL REVIEW ***
+[PLC ] Item #004 detected at inspection point (HR0 Item_Trigger_Counter -> 4)
+[PLC ] Item #005 detected at inspection point (HR0 Item_Trigger_Counter -> 5)
+[PLC ] Server stopped.

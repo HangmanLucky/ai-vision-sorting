@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Driven Edge Vision Integration &mdash; Sorting Matrix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C0A16; --panel:#141225; --line:#2A2645;
+    --text-hi:#F1EEFB; --text-mid:#A79FD1; --text-dim:#5F5789;
+    --violet:#9D6BFF; --cyan:#4FE0E8; --safe:#35D0A0; --warn:#F5A623; --trip:#EF4B4B;
+    --mono:'IBM Plex Mono',monospace; --label:'Barlow Semi Condensed',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text-hi);font-family:var(--label);}
+  body{min-height:100vh;padding:18px;background:radial-gradient(1100px 550px at 85% -10%, rgba(157,107,255,0.10), transparent 60%), var(--bg);}
+  .console{max-width:1260px;margin:0 auto;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel);box-shadow:0 30px 80px rgba(0,0,0,0.55);}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:#0F0D1E;border-bottom:1px solid var(--line);}
+  .line{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--violet);text-transform:uppercase;}
+  h1{font-size:17px;margin:2px 0 2px;letter-spacing:.04em;font-weight:700;text-transform:uppercase;}
+  .sub{font-size:11px;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;}
+  .clock{font-family:var(--mono);font-size:13px;color:var(--text-mid);text-align:right;}
+  .clock span{display:block;color:var(--text-dim);font-size:10px;letter-spacing:.12em;text-transform:uppercase;}
+
+  .statusrow{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-bottom:1px solid var(--line);}
+  .pill{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.05em;padding:8px 14px;border-radius:3px;border:1px solid;}
+  .pill.ok{color:var(--safe);border-color:rgba(53,208,160,.4);background:rgba(53,208,160,.08);}
+  .pill.trip{color:var(--trip);border-color:rgba(239,75,75,.5);background:rgba(239,75,75,.12);}
+  .metabox{font-family:var(--mono);font-size:10.5px;color:var(--text-mid);}
+  .metabox b{color:var(--text-hi);}
+  .metaitem{display:inline-block;margin-left:18px;}
+  .hbdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--safe);margin-right:6px;}
+  .hbdot.off{background:var(--trip);animation:blink 1s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+  .stage{padding:0;background:#100e20;}
+  .stage svg{width:100%;display:block;}
+
+  .main{display:flex;border-top:1px solid var(--line);}
+  .col{padding:16px 20px;border-right:1px solid var(--line);}
+  .col:last-child{border-right:none;}
+  .celltitle{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin:0 0 10px;font-weight:600;}
+
+  .counter{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;padding:6px 0;border-bottom:1px solid var(--line);}
+  .counter b{color:var(--text-hi);font-size:13px;}
+  .counter.pass b{color:var(--safe);} .counter.reject b{color:var(--trip);} .counter.manual b{color:var(--warn);}
+
+  .log{display:flex;flex-direction:column;max-height:170px;overflow-y:auto;margin-top:8px;}
+  .log-row{display:flex;padding:6px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:9.5px;}
+  .log-row:last-child{border-bottom:none;}
+  .log-time{color:var(--text-dim);flex:none;width:52px;}
+  .log-tag{flex:none;width:6px;height:6px;border-radius:50%;margin:3px 7px 0 0;}
+  .log-tag.ok{background:var(--safe);} .log-tag.trip{background:var(--trip);} .log-tag.warn{background:var(--warn);} .log-tag.info{background:var(--cyan);}
+  .log-msg{color:var(--text-mid);}
+  ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+
+  .footer{padding:12px 22px;font-family:var(--mono);font-size:10px;color:var(--text-dim);border-top:1px solid var(--line);display:flex;justify-content:space-between;}
+</style>
+</head>
+<body>
+<div class="console">
+  <div class="topbar">
+    <div>
+      <div class="line">LINE 3 &nbsp;&middot;&nbsp; EDGE AI + PLC INTEGRATION</div>
+      <h1>Neural Network Sorting Matrix</h1>
+      <div class="sub">AI-Driven Edge Vision &mdash; Modbus TCP Handshake</div>
+    </div>
+    <div class="clock"><span>Line Time</span><span id="clockval">--:--:--</span></div>
+  </div>
+
+  <div class="statusrow">
+    <div class="pill ok" id="statusPill">SORTING ACTIVE</div>
+    <div class="metabox">
+      <span class="metaitem"><span class="hbdot" id="hbDot"></span>AI HEARTBEAT <b id="hbVal">ONLINE</b></span>
+      <span class="metaitem">ITEMS PROCESSED <b id="itemCount">0</b></span>
+    </div>
+  </div>
+
+  <div class="stage">
+    <svg viewBox="0 0 1220 260" id="stageSvg">
+      <rect x="0" y="0" width="1220" height="260" fill="#100e20"/>
+      <!-- Belt -->
+      <rect x="40" y="150" width="1000" height="14" fill="#1c1836" stroke="#2A2645" stroke-width="1.5"/>
+      <g id="beltDashes"></g>
+
+      <!-- Camera / inspection station -->
+      <rect x="170" y="90" width="50" height="40" rx="4" fill="#1c1836" stroke="#4FE0E8" stroke-width="2"/>
+      <circle cx="195" cy="110" r="10" fill="#0C0A16" stroke="#4FE0E8" stroke-width="2"/>
+      <circle id="camFlash" cx="195" cy="110" r="16" fill="#4FE0E8" opacity="0"/>
+      <text x="195" y="145" font-family="IBM Plex Mono" font-size="9" fill="#A79FD1" text-anchor="middle">CAMERA</text>
+      <line x1="195" y1="130" x2="195" y2="150" stroke="#4FE0E8" stroke-width="1" stroke-dasharray="2 2"/>
+
+      <!-- Neural net glyph near camera -->
+      <g id="nnGlyph" transform="translate(255,80)" opacity="0.85">
+        <circle cx="0" cy="10" r="3" fill="#9D6BFF"/><circle cx="0" cy="25" r="3" fill="#9D6BFF"/>
+        <circle cx="18" cy="0" r="3" fill="#9D6BFF"/><circle cx="18" cy="18" r="3" fill="#9D6BFF"/><circle cx="18" cy="34" r="3" fill="#9D6BFF"/>
+        <circle cx="36" cy="10" r="3" fill="#4FE0E8"/><circle cx="36" cy="25" r="3" fill="#4FE0E8"/>
+        <g stroke="#4a4470" stroke-width="1">
+          <line x1="0" y1="10" x2="18" y2="0"/><line x1="0" y1="10" x2="18" y2="18"/><line x1="0" y1="10" x2="18" y2="34"/>
+          <line x1="0" y1="25" x2="18" y2="0"/><line x1="0" y1="25" x2="18" y2="18"/><line x1="0" y1="25" x2="18" y2="34"/>
+          <line x1="18" y1="0" x2="36" y2="10"/><line x1="18" y1="18" x2="36" y2="10"/><line x1="18" y1="34" x2="36" y2="10"/>
+          <line x1="18" y1="0" x2="36" y2="25"/><line x1="18" y1="18" x2="36" y2="25"/><line x1="18" y1="34" x2="36" y2="25"/>
+        </g>
+      </g>
+
+      <!-- Diverter -->
+      <g transform="translate(760,157)">
+        <circle cx="0" cy="0" r="6" fill="#2A2645"/>
+        <line id="diverterArm" x1="0" y1="0" x2="0" y2="-46" stroke="#F5A623" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <text x="760" y="145" font-family="IBM Plex Mono" font-size="9" fill="#A79FD1" text-anchor="middle">DIVERTER</text>
+
+      <!-- Bins -->
+      <rect x="900" y="185" width="90" height="50" fill="#122a20" stroke="#35D0A0" stroke-width="1.6"/>
+      <text x="945" y="215" font-family="IBM Plex Mono" font-size="10" fill="#35D0A0" text-anchor="middle">PASS</text>
+      <rect x="770" y="30" width="90" height="50" fill="#2a1414" stroke="#EF4B4B" stroke-width="1.6"/>
+      <text x="815" y="60" font-family="IBM Plex Mono" font-size="10" fill="#EF4B4B" text-anchor="middle">REJECT</text>
+      <rect x="620" y="185" width="110" height="50" fill="#2a2210" stroke="#F5A623" stroke-width="1.6"/>
+      <text x="675" y="212" font-family="IBM Plex Mono" font-size="9" fill="#F5A623" text-anchor="middle">MANUAL</text>
+      <text x="675" y="225" font-family="IBM Plex Mono" font-size="9" fill="#F5A623" text-anchor="middle">REVIEW</text>
+
+      <!-- Items layer -->
+      <g id="itemsLayer"></g>
+    </svg>
+  </div>
+
+  <div class="main">
+    <div class="col" style="flex:0.9;">
+      <p class="celltitle">Sort Counters</p>
+      <div class="counter pass"><span>PASS</span><b id="cntPass">0</b></div>
+      <div class="counter reject"><span>REJECT</span><b id="cntReject">0</b></div>
+      <div class="counter manual"><span>MANUAL REVIEW</span><b id="cntManual">0</b></div>
+      <p class="celltitle" style="margin-top:16px;">Modbus Registers (live)</p>
+      <div style="font-family:var(--mono);font-size:9.5px;color:var(--text-mid);line-height:1.9;">
+        HR0 Item_Trigger_Counter <b id="hr0" style="color:#fff;">0</b><br/>
+        HR5 AI_Heartbeat <b id="hr5" style="color:#fff;">0</b><br/>
+        HR6 AI_Result_Ready <b id="hr6" style="color:#fff;">0</b>
+      </div>
+    </div>
+    <div class="col" style="flex:1.2;">
+      <p class="celltitle">Alarm &amp; Event Log</p>
+      <div class="log" id="logList"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Simulated HMI &mdash; desktop validation build; python/ contains a genuinely working inference + Modbus service</span>
+    <span>AI-SORTING-MATRIX v1.0 &middot; Author: Sipho Lucky Sibanda</span>
+  </div>
+</div>
+
+<script>
+  function tick(){ var d = new Date(); document.getElementById('clockval').textContent = d.toISOString().substr(11,8) + ' UTC'; }
+  tick(); setInterval(tick, 1000);
+
+  var BELT_X0 = 40, BELT_X1 = 1040, CAM_X = 195, DIV_X = 760;
+  var SPEED = 90; // px per second
+
+  var state = { items: [], nextId: 1, cnt: {pass:0, reject:0, manual:0}, hr0:0, hr5:0, hr6:0, aiOnline:true, processed:0 };
+
+  var logList = document.getElementById('logList');
+  function pushLog(msg, level){
+    var row = document.createElement('div'); row.className = 'log-row';
+    var t = document.createElement('span'); t.className='log-time'; t.textContent = new Date().toISOString().substr(11,8);
+    var g = document.createElement('span'); g.className = 'log-tag ' + level;
+    var m = document.createElement('span'); m.className='log-msg'; m.textContent = msg;
+    row.appendChild(t); row.appendChild(g); row.appendChild(m);
+    if(logList.firstChild){ logList.insertBefore(row, logList.firstChild); } else { logList.appendChild(row); }
+    while(logList.children.length > 22){ logList.removeChild(logList.lastChild); }
+  }
+  pushLog('System enabled - sorting active', 'ok');
+
+  var itemsLayer = document.getElementById('itemsLayer');
+  var ns = 'http://www.w3.org/2000/svg';
+
+  function spawnItem(){
+    var id = state.nextId++;
+    var roll = Math.random();
+    var defect = roll > 0.55;
+    var conf = defect ? (0.45 + Math.random()*0.55) : (0.45 + Math.random()*0.55);
+    var cls = ['Scratch','Dent','Discoloration'][Math.floor(Math.random()*3)];
+    var g = document.createElementNS(ns, 'g');
+    var rect = document.createElementNS(ns, 'rect');
+    rect.setAttribute('width', 34); rect.setAttribute('height', 28);
+    rect.setAttribute('rx', 3); rect.setAttribute('fill', '#3a3564'); rect.setAttribute('stroke', '#6a63a8');
+    var label = document.createElementNS(ns, 'text');
+    label.setAttribute('font-family', 'IBM Plex Mono'); label.setAttribute('font-size', '9');
+    label.setAttribute('text-anchor', 'middle'); label.setAttribute('y', -8);
+    g.appendChild(rect); g.appendChild(label);
+    itemsLayer.appendChild(g);
+
+    return {
+      id:id, x: BELT_X0 - 40, y: 143, el: g, rect: rect, label: label,
+      classified:false, defect:defect, conf:conf, cls:cls, routed:false, bornAt: Date.now()
+    };
+  }
+
+  function render(dt){
+    // Spawn occasionally
+    if (Math.random() < dt/1800) {
+      state.items.push(spawnItem());
+    }
+
+    for (var i = state.items.length-1; i >= 0; i--){
+      var it = state.items[i];
+      it.x += SPEED * (dt/1000);
+      it.el.setAttribute('transform', 'translate(' + it.x + ',' + it.y + ')');
+
+      if (!it.classified && it.x >= CAM_X - 10){
+        it.classified = true;
+        state.hr0 += 1;
+        document.getElementById('hr0').textContent = state.hr0;
+        var flash = document.getElementById('camFlash');
+        flash.setAttribute('opacity', 0.6);
+        setTimeout(function(){ flash.setAttribute('opacity', 0); }, 220);
+
+        if (state.aiOnline){
+          var verdict = it.defect ? ('FAIL (AI Defect Detected: ' + Math.round(it.conf*100) + '% Confidence)') : 'PASS';
+          it.label.textContent = it.defect ? ('FAIL ' + Math.round(it.conf*100) + '%') : 'PASS';
+          it.label.setAttribute('fill', it.defect ? '#EF4B4B' : '#35D0A0');
+          pushLog('Item #' + it.id + ' classified: ' + verdict, it.defect ? 'trip' : 'ok');
+          it.finalRoute = (it.conf < 0.6 || it.conf < 0.9) ? 'manual' : (it.defect ? 'reject' : 'pass');
+          if (it.conf >= 0.9) { it.finalRoute = it.defect ? 'reject' : 'pass'; } else { it.finalRoute = 'manual'; }
+        } else {
+          it.label.textContent = 'MANUAL (AI OFFLINE)';
+          it.label.setAttribute('fill', '#F5A623');
+          it.finalRoute = 'manual';
+          pushLog('Item #' + it.id + ' - AI offline, routed to manual review', 'warn');
+        }
+        state.hr5 += 1; document.getElementById('hr5').textContent = state.hr5;
+        state.hr6 = 1; document.getElementById('hr6').textContent = state.hr6;
+        setTimeout(function(){ state.hr6 = 0; document.getElementById('hr6').textContent = 0; }, 150);
+      }
+
+      if (!it.routed && it.x >= DIV_X - 17){
+        it.routed = true;
+        var arm = document.getElementById('diverterArm');
+        var angle = it.finalRoute === 'pass' ? 35 : (it.finalRoute === 'reject' ? -70 : -20);
+        arm.setAttribute('transform', 'rotate(' + angle + ')');
+        state.cnt[it.finalRoute]++;
+        document.getElementById('cnt' + (it.finalRoute.charAt(0).toUpperCase()+it.finalRoute.slice(1))).textContent = state.cnt[it.finalRoute];
+        state.processed++;
+        document.getElementById('itemCount').textContent = state.processed;
+      }
+
+      if (it.x > BELT_X1 + 60){
+        it.el.remove();
+        state.items.splice(i, 1);
+      }
+    }
+
+    // Belt dashes (simple motion cue)
+    var dashG = document.getElementById('beltDashes');
+    dashG.innerHTML = '';
+    var offset = (Date.now()/20) % 30;
+    for (var x = BELT_X0 - 30 + offset; x < BELT_X1; x += 30){
+      var d = document.createElementNS(ns,'rect');
+      d.setAttribute('x', x); d.setAttribute('y', 154); d.setAttribute('width', 14); d.setAttribute('height', 6);
+      d.setAttribute('fill', '#2A2645');
+      dashG.appendChild(d);
+    }
+  }
+
+  var lastT = Date.now();
+  function loop(){
+    var now = Date.now();
+    var dt = now - lastT;
+    lastT = now;
+    render(dt);
+  }
+  setInterval(loop, 40);
+
+  // ---- Scripted event: AI goes offline partway through, then recovers ----
+  setTimeout(function(){
+    state.aiOnline = false;
+    document.getElementById('hbDot').className = 'hbdot off';
+    document.getElementById('hbVal').textContent = 'OFFLINE';
+    document.getElementById('statusPill').className = 'pill trip';
+    document.getElementById('statusPill').textContent = 'AI OFFLINE - MANUAL ONLY';
+    pushLog('AI_Heartbeat stale for >2.0s - declaring AI OFFLINE', 'trip');
+  }, 14000);
+  setTimeout(function(){
+    state.aiOnline = true;
+    document.getElementById('hbDot').className = 'hbdot';
+    document.getElementById('hbVal').textContent = 'ONLINE';
+    document.getElementById('statusPill').className = 'pill ok';
+    document.getElementById('statusPill').textContent = 'SORTING ACTIVE';
+    pushLog('AI_Heartbeat resumed - AI service back online', 'ok');
+  }, 22000);
+  setInterval(function(){}, 36000);
+</script>
+</body>
+</html>

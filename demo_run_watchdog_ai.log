@@ -1,0 +1,4 @@
+[AI  ] Loaded trained model_weights.npz
+[AI  ] Connected to PLC Modbus TCP server at 127.0.0.1:5020
+[AI  ] Item #001 inferred: FAIL  confidence=53.4%  class=Dent
+[AI  ] Item #002 inferred: FAIL  confidence=87.0%  class=Dent

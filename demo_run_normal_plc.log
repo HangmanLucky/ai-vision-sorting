@@ -1,0 +1,18 @@
+[PLC ] Modbus TCP server (simulated PLC register map) listening on 127.0.0.1:5020
+[PLC ] Item #001 detected at inspection point (HR0 Item_Trigger_Counter -> 1)
+[PLC ] Result for item #001: PASS  (confidence 66.9%, class=None) - consuming and clearing HR6
+[PLC ] Item #002 detected at inspection point (HR0 Item_Trigger_Counter -> 2)
+[PLC ] Result for item #002: PASS  (confidence 92.4%, class=None) - consuming and clearing HR6
+[PLC ] Item #003 detected at inspection point (HR0 Item_Trigger_Counter -> 3)
+[PLC ] Result for item #003: PASS  (confidence 75.8%, class=None) - consuming and clearing HR6
+[PLC ] Item #004 detected at inspection point (HR0 Item_Trigger_Counter -> 4)
+[PLC ] Result for item #004: FAIL  (confidence 79.0%, class=Dent) - consuming and clearing HR6
+[PLC ] Item #005 detected at inspection point (HR0 Item_Trigger_Counter -> 5)
+[PLC ] Result for item #005: FAIL  (confidence 100.0%, class=Discoloration) - consuming and clearing HR6
+[PLC ] Item #006 detected at inspection point (HR0 Item_Trigger_Counter -> 6)
+[PLC ] Result for item #006: FAIL  (confidence 100.0%, class=Dent) - consuming and clearing HR6
+[PLC ] Item #007 detected at inspection point (HR0 Item_Trigger_Counter -> 7)
+[PLC ] Result for item #007: PASS  (confidence 74.8%, class=None) - consuming and clearing HR6
+[PLC ] Item #008 detected at inspection point (HR0 Item_Trigger_Counter -> 8)
+[PLC ] Result for item #008: PASS  (confidence 76.8%, class=None) - consuming and clearing HR6
+[PLC ] Server stopped.

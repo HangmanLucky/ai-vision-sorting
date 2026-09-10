@@ -1,0 +1,12 @@
+[AI  ] Loaded trained model_weights.npz
+[AI  ] Connected to PLC Modbus TCP server at 127.0.0.1:5020
+[AI  ] Item #001 inferred: PASS  confidence=66.9%  class=None
+[AI  ] Item #002 inferred: PASS  confidence=92.4%  class=None
+[AI  ] Item #003 inferred: PASS  confidence=75.8%  class=None
+[AI  ] Item #004 inferred: FAIL  confidence=79.0%  class=Dent
+[AI  ] Item #005 inferred: FAIL  confidence=100.0%  class=Discoloration
+[AI  ] Item #006 inferred: FAIL  confidence=100.0%  class=Dent
+[AI  ] Item #007 inferred: PASS  confidence=74.8%  class=None
+[AI  ] Item #008 inferred: PASS  confidence=76.8%  class=None
+[AI  ] Reached max_items=8, stopping.
+[AI  ] Disconnected.
