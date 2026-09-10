@@ -1,6 +1,12 @@
 # 🤖 AI-Driven Edge Vision Integration
 ### PLC-Controlled Neural Network Sorting Matrix
 
+## 🌍🌡️ Live Project
+
+### 🖥️ Interactive HMI
+
+☀️ **[Launch the AI-Driven HMI](https://hangmanlucky.github.io/facade-solar-louver/)**
+
 ![Platform](https://img.shields.io/badge/PLC-Siemens%20S7--1500%20%2F%20CODESYS-blue)
 ![Language](https://img.shields.io/badge/Language-IEC%2061131--3%20%2B%20Python-informational)
 ![Domain](https://img.shields.io/badge/Domain-Industrial%20Edge%20AI%20%2F%20Modbus%20TCP-violet)
@@ -26,7 +32,7 @@ Every other project in this portfolio can only be validated in simulation, becau
 there's no real ship, aircraft, or building to test against. **This one can actually
 run.** `python/` contains a genuinely trained model and a genuinely working Modbus
 TCP client/server pair — not a mockup. The logs in
-[`docs/Testing_Procedures.md`](docs/Testing_Procedures.md) are copy-pasted output
+[`Testing_Procedures.md`](Testing_Procedures.md) are copy-pasted output
 from real executions, including a test where the AI service was `SIGKILL`ed mid-run
 to prove the PLC-side watchdog actually detects it.
 
@@ -49,17 +55,17 @@ to prove the PLC-side watchdog actually detects it.
 
 ## 🖥️ HMI — Conveyor & Sorting Visualization
 
-The `hmi/index.html` mockup shows items moving along a conveyor, getting labelled
+The `index.html` mockup shows items moving along a conveyor, getting labelled
 live at the camera station ("PASS" or "FAIL (AI Defect Detected: 78% Confidence)"),
 and a diverter arm swinging to route each one into a PASS, REJECT, or MANUAL REVIEW
 bin. It scripts an AI-offline event partway through so the fail-safe behaviour is
 something you actually see happen.
 
-![HMI Dashboard](images/hmi-dashboard.png)
+![HMI Dashboard](hmi-dashboard.png)
 
 ## 🗺️ System Architecture
 
-![Architecture Diagram](images/architecture_diagram.svg)
+![Architecture Diagram](architecture_diagram.svg)
 
 ## ⚙️ Key Engineering Concepts
 
@@ -105,9 +111,9 @@ ai-vision-sorting/
 
 ## 📄 Documentation
 
-- [I/O List &amp; Modbus Register Map](docs/IO_List.md)
-- [Functional Test Procedures (with real logs)](docs/Testing_Procedures.md)
-- [Full Technical Manual (PDF)](ebook/AI_Vision_Technical_Manual.pdf) — 25-page project ebook covering edge-AI industry context, architecture, the neural network's honest scope and real training results, full annotated PLC and Python code, the genuinely executed integration test with real logs, HMI design, testing/commissioning, and a HAZOP-style hazard register
+- [I/O List &amp; Modbus Register Map](IO_List.md)
+- [Functional Test Procedures (with real logs)](Testing_Procedures.md)
+- [Full Technical Manual (PDF)](AI_Vision_Technical_Manual.pdf) — 25-page project ebook covering edge-AI industry context, architecture, the neural network's honest scope and real training results, full annotated PLC and Python code, the genuinely executed integration test with real logs, HMI design, testing/commissioning, and a HAZOP-style hazard register
 
 ## ⚠️ Disclaimer
 
